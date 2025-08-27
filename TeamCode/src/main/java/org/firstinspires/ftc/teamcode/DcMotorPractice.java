@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.mechanisms.TestBench1;
 @TeleOp
 public class DcMotorPractice  extends OpMode {
     TestBench1 bench = new TestBench1();
+
     @Override
     public void init() {
         bench.init(hardwareMap);
@@ -15,7 +16,13 @@ public class DcMotorPractice  extends OpMode {
 
     @Override
     public void loop() {
-        bench.setMotorSpeed(0.5);
-    }
+        if (bench.isTouchSensorPressed()) {
+            bench.setMotorSpeed(0.5);
+        }
+        else {
+            bench.setMotorSpeed(0.0);
+        }
+            telemetry.addData("Motor Revs", bench.getMotorRevs());
 
+    }
 }
