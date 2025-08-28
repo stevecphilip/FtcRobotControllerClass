@@ -16,7 +16,7 @@ public class DcMotorPractice  extends OpMode {
 
     @Override
     public void loop() {
-        if (bench.isTouchSensorPressed()) {
+        if (bench.isTouchSensorPressed) {
             bench.setMotorSpeed(0.5);
         }
         else {

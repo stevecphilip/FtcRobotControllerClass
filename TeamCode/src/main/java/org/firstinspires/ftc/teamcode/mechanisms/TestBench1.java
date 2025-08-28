@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class TestBench1 {
+    public boolean isTouchSensorPressed;
     private DcMotor test_motor;
     private double ticksPerRev;
 
