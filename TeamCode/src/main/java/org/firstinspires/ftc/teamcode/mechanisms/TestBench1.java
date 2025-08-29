@@ -12,6 +12,7 @@ public class TestBench1 {
 
 
         test_motor = hwMap.get(DcMotor.class, "test_motor");
+        test_motor.setTargetPosition(DcMotor);
         test_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         ticksPerRev = test_motor.getMotorType().getTicksPerRev();
     }
