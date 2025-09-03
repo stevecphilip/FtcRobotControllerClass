@@ -1,54 +1,63 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.Gamepad;
+
+import java.lang.annotation.ElementType;
 
 @TeleOp
-public class ServoAndTouch extends LinearOpMode {
+public class touchServo extends LinearOpMode {
+    private Servo servo;
+    private TouchSensor touchsensor;
+    private boolean flop = false;
 
-    double servoPos = 0.75; // Starting at mid-range position (0.0 to 1.0)
-    TestBench bench = new TestBench();  // Custom class that contains your hardware
-    private ElapsedTime runTime = new ElapsedTime();
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
+        double runtime = getRuntime();
+        servo = hardwareMap.get(Servo.class, "test_servo");
+        touchsensor = hardwareMap.get(TouchSensor.class, "touch_sensor");
+        ElapsedTime elapsedTime = new ElapsedTime();
 
-        bench.init(hardwareMap);  // Initialize hardware
-        telemetry.addLine("Initialized. Waiting for start...");
-        telemetry.update();
+        double time = elapsedTime.time();
 
         waitForStart();
 
         while (opModeIsActive()) {
+            if (touchsensor.isPressed()) {
+                if (flop) {
+                    servo.setPosition(0);
+                    double current = elapsedTime.time();
+                    while (elapsedTime.time() - current < 1) {
 
-            // Check the touch sensor live
-            if (bench.TouchValue()) {
-                // Touch sensor is pressed — start servo motion loop
+                    }
+                    flop = false;
+                } else {
+                    servo.setPosition(1.0);
+                    double current = elapsedTime.time();
+                    while (elapsedTime.time() - current < 1) {
 
-                // Move servo in one direction for 3 seconds
-                runTime.reset();
-                while (opModeIsActive() && runTime.seconds() <= 3 && bench.TouchValue()) {
-                    bench.setServoPosition(0.75); // 135 degrees approx
-                    servoPos = 0.75;
-                    telemetry.addData("Servo", "Moving to 135 degrees");
-                    telemetry.update();
+                    }
+                    flop = true;
                 }
 
-                // Move servo in opposite direction for 3 seconds
-                runTime.reset();
-                while (opModeIsActive() && runTime.seconds() <= 3 && bench.TouchValue()) {
-                    bench.setServoPosition(0.25); // ~45 degrees approx
-                    servoPos = 0.25;
-                    telemetry.addData("Servo", "Moving to 45 degrees");
-                    telemetry.update();
-                }
+            } else {
+                servo.setPosition(servo.getPosition());
             }
 
-            // Always show latest status
-            telemetry.addData("Touch Pressed", bench.TouchValue());
-            telemetry.addData("Servo Position", servoPos);
+
+            telemetry.addData("Runtime", runtime);
+            telemetry.addData("Servo Position", servo.getPosition());
+            telemetry.addData("Touch Sensor Value", touchsensor.isPressed());
             telemetry.update();
         }
+
+
     }
 }
+
+
