@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 
 import org.firstinspires.ftc.robotcore.external.JavaUtil;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -21,7 +20,7 @@ public class ColorSensorPractice extends LinearOpMode {
     @Override
     public void runOpMode(){
         ColorSensor color = hardwareMap.get(ColorSensor.class, "color_sensor");
-
+        DistanceSensor distance = hardwareMap.get(DistanceSensor.class, "sensor_distance");
         waitForStart();
 
         while (opModeIsActive()) {
@@ -30,7 +29,7 @@ public class ColorSensorPractice extends LinearOpMode {
             telemetry.addData("Blue", color.blue());
             telemetry.addData("Hue", (JavaUtil.colorToHue(color.blue())));
             telemetry.addData("Run Time", elapsedTime.time());
-            telemetry.addData("Distance", distanceSensor.getDistance(DistanceUnit.CM));
+            telemetry.addData("Distance", distance.getDistance(DistanceUnit.CM));
             telemetry.update();
         }
     }
