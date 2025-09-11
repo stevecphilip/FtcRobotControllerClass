@@ -1,4 +1,6 @@
 package org.firstinspires.ftc.teamcode;
+import androidx.lifecycle.GenericLifecycleObserver;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -30,6 +32,7 @@ public class ColorSensorPractice extends LinearOpMode {
             float hue = hsv[0];
             float sat = hsv[1];
             float val = hsv[2];
+            double dist = distance.getDistance(DistanceUnit.MM);
 
             telemetry.addData("Red", color.red());
             telemetry.addData("Green", color.green());
@@ -38,8 +41,29 @@ public class ColorSensorPractice extends LinearOpMode {
             telemetry.addData("Saturation", sat);
             telemetry.addData("Value", val);
             telemetry.addData("Run Time", elapsedTime.time());
-            telemetry.addData("Distance", distance.getDistance(DistanceUnit.MM));
+            telemetry.addData("Distance (MM)", dist);
             telemetry.update();
+
+            if (dist > 50) {
+                dcMotor.setPower(0.0);
+                telemetry.addLine("No Color Detected");
+            }
+            else if(hue <= 45 || hue >= 300) {
+                dcMotor.setPower(1.0);
+                telemetry.addLine("Red");
+            } else if (hue >= 180 && hue <= 145) {
+                dcMotor.setPower(0.4);
+                telemetry.addLine("Dark Green");
+            } else if (hue >= 101 && hue <= 299) {
+                dcMotor.setPower(0.2);
+                telemetry.addLine("Blue");
+            } else if (hue >= 31 && hue <= 110) {
+                dcMotor.setPower(0.3);
+                telemetry.addLine("Yellow");
+            } else if (hue >= 111 && hue <= 144) {
+                dcMotor.setPower(-0.6);
+                telemetry.addLine("Light Green");
+            }
         }
     }
 }
