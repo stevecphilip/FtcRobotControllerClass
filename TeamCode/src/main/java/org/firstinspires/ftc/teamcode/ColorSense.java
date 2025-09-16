@@ -1,5 +1,4 @@
 package org.firstinspires.ftc.teamcode;
-import androidx.lifecycle.GenericLifecycleObserver;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -9,8 +8,8 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-@TeleOp (name = "ColorSensorPractice", group = "Program")
-public class ColorSensorPractice extends LinearOpMode {
+@TeleOp (name = "ColorSense", group = "Program")
+public class ColorSense extends LinearOpMode {
     private ColorSensor color;
     private DistanceSensor distanceSensor;
     ElapsedTime elapsedTime = new ElapsedTime();
@@ -44,23 +43,27 @@ public class ColorSensorPractice extends LinearOpMode {
             telemetry.addData("Distance (MM)", dist);
             telemetry.update();
 
-            if (dist > 50) {
+            if (val >= 165) {
+                dcMotor.setPower(0.8);
+                telemetry.addLine("White");
+            }
+            else if (dist > 50 || dist < 35) {
                 dcMotor.setPower(0.0);
                 telemetry.addLine("No Color Detected");
             }
             else if(hue <= 45 || hue >= 300) {
                 dcMotor.setPower(1.0);
                 telemetry.addLine("Red");
-            } else if (hue >= 180 && hue <= 145) {
+            } else if (hue <= 180 && hue >= 145) {
                 dcMotor.setPower(0.4);
                 telemetry.addLine("Dark Green");
             } else if (hue >= 101 && hue <= 299) {
                 dcMotor.setPower(0.2);
                 telemetry.addLine("Blue");
-            } else if (hue >= 31 && hue <= 110) {
+            } else if (hue >= 144 && hue <= 190) {
                 dcMotor.setPower(0.3);
                 telemetry.addLine("Yellow");
-            } else if (hue >= 111 && hue <= 144) {
+            } else if (hue <= 144 && hue >= 111) {
                 dcMotor.setPower(-0.6);
                 telemetry.addLine("Light Green");
             }
